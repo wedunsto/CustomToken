@@ -16,13 +16,13 @@ const Results =({route})=>{
             try{
                 var root = HTMLParser.parse(htmlString)
                 //console.log("==================================")
-                for(let i=0; i<root.childNodes[0].childNodes[3].childNodes[1].childNodes.length; i++){
+                for(let i=0; i<root.childNodes[0].childNodes[3].childNodes[1].childNodes[5].childNodes[3].childNodes[11].childNodes[3].childNodes[1].childNodes.length; i++){
                     console.log("==================================")
                     console.log(i)
-                    console.log(root.childNodes[0].childNodes[3].childNodes[1].childNodes[i])
+                    console.log(root.childNodes[0].childNodes[3].childNodes[1].childNodes[5].childNodes[3].childNodes[11].childNodes[3].childNodes[1].childNodes[i])
                     console.log("==================================")
                 }
-                //console.log(root.childNodes[0].childNodes[3].childNodes[1].childNodes.length)
+                //console.log(root.childNodes[0].childNodes[3].childNodes[1].childNodes[5].childNodes[3].childNodes[11].childNodes[3].childNodes[1].childNodes)
                 //console.log("==================================")
                 //const rootNode = await DomSelector(htmlString);
             }
