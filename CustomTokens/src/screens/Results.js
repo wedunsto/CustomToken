@@ -8,6 +8,8 @@ var HTMLParser = require('fast-html-parser')
 
 const Results =({route})=>{
     const [tokenURL, setTokenURL] = useState(null);
+    let imageURLs = []
+
     const {searchURL} = route.params
     useEffect(()=>{
         const loadTokens=async()=>{
@@ -15,34 +17,28 @@ const Results =({route})=>{
             const htmlString = await response.text();
             try{
                 var root = HTMLParser.parse(htmlString)
-                //console.log("==================================")
-                for(let i=0; i<root.childNodes[0].childNodes[3].childNodes[1].childNodes[5].childNodes[3].childNodes[11].childNodes[3].childNodes[1].childNodes.length; i++){
+                /*for(let i=0; i<root.childNodes[0].childNodes[3].childNodes[1].childNodes[5].childNodes[3].childNodes[11].childNodes[3].childNodes[1].childNodes[1].childNodes.length; i++){
                     console.log("==================================")
                     console.log(i)
-                    console.log(root.childNodes[0].childNodes[3].childNodes[1].childNodes[5].childNodes[3].childNodes[11].childNodes[3].childNodes[1].childNodes[i])
+                    console.log(root.childNodes[0].childNodes[3].childNodes[1].childNodes[5].childNodes[3].childNodes[11].childNodes[3].childNodes[1].childNodes[1].childNodes[i])
                     console.log("==================================")
-                }
-                //console.log(root.childNodes[0].childNodes[3].childNodes[1].childNodes[5].childNodes[3].childNodes[11].childNodes[3].childNodes[1].childNodes)
-                //console.log("==================================")
-                //const rootNode = await DomSelector(htmlString);
+                }*/
+                let rawAttrs = root.childNodes[0].childNodes[3].childNodes[1].childNodes[5].childNodes[3].childNodes[11].childNodes[3].childNodes[1].childNodes[1].childNodes[1].childNodes[1].rawAttrs
+                let startIndex = rawAttrs.indexOf("https")
+                let stopIndex = rawAttrs.indexOf("jpg")+3
+                setTokenURL(rawAttrs.substring(startIndex, stopIndex))
             }
             catch(error){
                 console.error(error)
             }
-            /*const rootNode = await DomSelector(htmlString);
-            console.log("==================================")
-            console.log(rootNode.getElementsByClassName('mainListing').length);
-            console.log("==================================")
-            //setTokenURL(rootNode.getElementsByClassName('cardLink')[0].children[0].attributes.src);*/
         }
         loadTokens()
     }, []);
-
     return(
         <View style={styles.headerTextStyle}>
             <Image 
                     style={styles.buttonStyle}
-                    source={{uri:"http://107.15.209.95/applications/images/29-291888_plus-png-doctor-plus-symbol-transparent-png.png"}}
+                    source={{uri: tokenURL}}
                 />
         </View>
     );
