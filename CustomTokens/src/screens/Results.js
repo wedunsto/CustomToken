@@ -3,7 +3,6 @@ Show the results of the search criteria
 */
 import {React, useEffect, useState} from 'react';
 import {Text, StyleSheet, View, Image} from 'react-native';
-//import DomSelector from 'react-native-dom-parser';
 var HTMLParser = require('fast-html-parser')
 
 const Results =({route})=>{
@@ -17,12 +16,31 @@ const Results =({route})=>{
             const htmlString = await response.text();
             try{
                 var root = HTMLParser.parse(htmlString)
-                /*for(let i=0; i<root.childNodes[0].childNodes[3].childNodes[1].childNodes[5].childNodes[3].childNodes[11].childNodes[3].childNodes[1].childNodes[1].childNodes.length; i++){
+                /*for(let i=0; i<root.childNodes[0].childNodes[3].childNodes[1].childNodes[5].childNodes[3].childNodes[11].childNodes[3].childNodes.length; i++){
                     console.log("==================================")
                     console.log(i)
-                    console.log(root.childNodes[0].childNodes[3].childNodes[1].childNodes[5].childNodes[3].childNodes[11].childNodes[3].childNodes[1].childNodes[1].childNodes[i])
+                    console.log(root.childNodes[0].childNodes[3].childNodes[1].childNodes[5].childNodes[3].childNodes[11].childNodes[3].childNodes[i])
                     console.log("==================================")
                 }*/
+                //console.log("==================================")
+                //console.log(root.querySelectorAll('img').length)
+                //console.log(root.childNodes[0].childNodes[3].childNodes[1].childNodes[5].childNodes[3].childNodes[11].childNodes[3])
+                //console.log(root.childNodes[0].childNodes[3].childNodes[1].childNodes[5].childNodes[3].childNodes[11].childNodes[3].childNodes[1].childNodes[1].childNodes[1].childNodes[1])
+                //console.log("==================================")
+                
+                for(let i=0; i<root.querySelectorAll('img').length; i++){
+                    if(root.querySelectorAll('img')[i].classNames.includes("cardSrc")){
+                        console.log("==================================")
+                        console.log(i)
+                        //console.log(root.querySelectorAll('img')[i].hasOwnProperty('class'))
+                        //console.log(Object.keys(root.querySelectorAll('img')[i]).length === 0)
+                        //console.log(Object.getOwnPropertyNames(root.querySelectorAll('img')[i]))
+                        console.log(root.querySelectorAll('img')[i])
+                        //console.log(root.querySelectorAll('img')[i])
+                        console.log("==================================")
+                    }
+                }
+
                 let rawAttrs = root.childNodes[0].childNodes[3].childNodes[1].childNodes[5].childNodes[3].childNodes[11].childNodes[3].childNodes[1].childNodes[1].childNodes[1].childNodes[1].rawAttrs
                 let startIndex = rawAttrs.indexOf("https")
                 let stopIndex = rawAttrs.indexOf("jpg")+3
