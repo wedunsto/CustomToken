@@ -2,10 +2,10 @@
 Show the results of the search criteria
 */
 import {React, useEffect, useState} from 'react';
-import {Text, StyleSheet, View, Image, FlatList} from 'react-native';
+import {Text, StyleSheet, View, Image, FlatList, TouchableOpacity} from 'react-native';
 var HTMLParser = require('fast-html-parser')
 
-const Results =({route})=>{
+const Results =({navigation, route})=>{
     const [tokenURLs, setTokenURLs] = useState(null);
 
     const {searchURL} = route.params
@@ -37,16 +37,31 @@ const Results =({route})=>{
         loadTokens()
     }, []);
 
+    const editToken=({item})=>{
+        console.log(item.src)
+    }
+
+    const renderItems=({item})=>{
+        return(
+            <TouchableOpacity 
+            onPress={()=>{
+                navigation.navigate('EditToken', {imageURL: item.src})
+            }}
+            style={styles.buttonStyle}>
+                <Image key={item.id}
+                style={styles.buttonImageStyle}
+                source={{uri: item.src}}
+                />  
+            </TouchableOpacity>
+        );
+    }
+
     return(
-        <View style={styles.headerTextStyle}>
+        <View style={styles.viewStyle}>
+            <Text style={styles.headerTextStyle}>Token Results</Text>
             <FlatList
                 data={tokenURLs}
-                renderItem={({item})=>{
-                    return(<Image key={item.id}
-                        style={styles.buttonStyle}
-                        source={{uri: item.src}}
-                    />);
-                }}
+                renderItem={renderItems}
                 keyExtractor={(items)=>{return items.id}}
             />
         </View>
@@ -54,11 +69,18 @@ const Results =({route})=>{
 };
 
 const styles = StyleSheet.create({
-    headerTextStyle:{
+    viewStyle:{
         flex: 1,
     },
-    buttonStyle:{
+    headerTextStyle:{
         marginTop: 40,
+        fontSize: 30,
+        alignSelf: 'center'
+    },
+    buttonStyle:{
+        marginTop: 40
+    },
+    buttonImageStyle:{
         width: 350,
         height: 350,
         alignSelf: 'center',
