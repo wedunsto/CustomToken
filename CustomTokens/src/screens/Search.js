@@ -6,14 +6,25 @@ import {React, useState} from "react";
 import {Text, StyleSheet, View, TouchableOpacity, TextInput, FlatList} from 'react-native';
 import EditedToken from "../components/EditedToken";
 
-const SearchScreen =({navigation})=>{
+const SearchScreen =({navigation, route})=>{
     const [searchTerm, setSearchTerm] = useState(null);
-    const [tokenURLs, setTokenURLs] = useState([]);
+    let editedTokenURLArray = []
+
+    if(route.params){
+        const {editedTokenURLs} = route.params
+        editedTokenURLArray = editedTokenURLs
+    }
+
+    console.log("Search screen edited token url array")
+    console.log(editedTokenURLArray)
 
     const storeSearchTerm =()=>{
         const parsedSearchTerm = {searchTerm}.searchTerm.replace(/ /g,'+').toLowerCase();
         const searchURL = 'https://www.cardkingdom.com/catalog/search?search=header&filter%5Bname%5D='+parsedSearchTerm;
-        navigation.navigate("Results",{searchURL: searchURL})
+        
+        navigation.navigate("Results",{
+            searchURL: searchURL,
+            editedTokenURLs: editedTokenURLArray})
     }
 
     const renderItems =({item})=>{
@@ -37,11 +48,6 @@ const SearchScreen =({navigation})=>{
             onPress={storeSearchTerm}>
                 <Text style={styles.searchText}>Search</Text>
             </TouchableOpacity>
-            <FlatList
-                data={tokenURLs}
-                renderItem={renderItems}
-                keyExtractor={(items)=>{return items.id}}
-            />
         </View>
     )};
 
@@ -68,5 +74,13 @@ const styles = StyleSheet.create({
         padding: 5
     }
 });
+
+/*
+<FlatList
+                data={editedTokenURLArray}
+                renderItem={renderItems}
+                keyExtractor={(items)=>{return items.id}}
+            />
+*/
 
 export default SearchScreen;

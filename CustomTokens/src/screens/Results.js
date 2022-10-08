@@ -7,9 +7,17 @@ var HTMLParser = require('fast-html-parser')
 
 const Results =({navigation, route})=>{
     const [tokenURLs, setTokenURLs] = useState(null);
-
+    const [editedTokenURL, setEditedTokenURLs] = useState([]);
     const {searchURL} = route.params
+    const {editedTokenURLs} = route.params
+
+    const [timeToNavigate, setTimeToNavigate] = useState(0)
+
     useEffect(()=>{
+        setEditedTokenURLs(editedTokenURLs)
+        console.log(`edited token URLS:`)
+        console.log(editedTokenURL)
+
         const loadTokens=async()=>{
             const response = await fetch(searchURL);
             const htmlString = await response.text();
@@ -37,15 +45,15 @@ const Results =({navigation, route})=>{
         loadTokens()
     }, []);
 
-    const editToken=({item})=>{
-        console.log(item.src)
-    }
-
     const renderItems=({item})=>{
         return(
             <TouchableOpacity 
             onPress={()=>{
-                navigation.navigate('Home', {imageURL: item.src})
+                setEditedTokenURLs(arr => [...arr, {id: 0, src: item.src}])
+                setTimeToNavigate(timeToNavigate + 1)
+                if(timeToNavigate>0){
+                    navigation.navigate('Search', {editedTokenURLs: editedTokenURL})
+                }
             }}
             style={styles.buttonStyle}>
                 <Image key={item.id}
