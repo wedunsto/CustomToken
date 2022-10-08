@@ -45,7 +45,7 @@ const Results =({navigation, route})=>{
         return(
             <TouchableOpacity 
             onPress={()=>{
-                navigation.navigate('EditToken', {imageURL: item.src})
+                navigation.navigate('Home', {imageURL: item.src})
             }}
             style={styles.buttonStyle}>
                 <Image key={item.id}
