@@ -8,15 +8,14 @@ var HTMLParser = require('fast-html-parser')
 const Results =({navigation, route})=>{
     const [tokenURLs, setTokenURLs] = useState(null);
     const [editedTokenURL, setEditedTokenURLs] = useState([]);
-    const {searchURL} = route.params
-    const {editedTokenURLs} = route.params
-
     const [timeToNavigate, setTimeToNavigate] = useState(0)
+    const [tokenId, setTokenId] = useState(0)
+
+    const {searchURL, editedTokenURLs, updateTokenId} = route.params
 
     useEffect(()=>{
         setEditedTokenURLs(editedTokenURLs)
-        console.log(`edited token URLS:`)
-        console.log(editedTokenURL)
+        setTokenId(updateTokenId)
 
         const loadTokens=async()=>{
             const response = await fetch(searchURL);
@@ -49,10 +48,13 @@ const Results =({navigation, route})=>{
         return(
             <TouchableOpacity 
             onPress={()=>{
-                setEditedTokenURLs(arr => [...arr, {id: 0, src: item.src}])
+                setEditedTokenURLs(arr => [...arr, {id: tokenId, src: item.src}])
+                setTokenId(tokenId + 1)
                 setTimeToNavigate(timeToNavigate + 1)
                 if(timeToNavigate>0){
-                    navigation.navigate('Search', {editedTokenURLs: editedTokenURL})
+                    navigation.navigate('Search', {
+                        editedTokenURLs: editedTokenURL,
+                        updateTokenId: tokenId})
                 }
             }}
             style={styles.buttonStyle}>

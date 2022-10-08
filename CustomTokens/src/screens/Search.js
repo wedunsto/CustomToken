@@ -9,14 +9,13 @@ import EditedToken from "../components/EditedToken";
 const SearchScreen =({navigation, route})=>{
     const [searchTerm, setSearchTerm] = useState(null);
     let editedTokenURLArray = []
+    let searchTokenId = 0
 
     if(route.params){
-        const {editedTokenURLs} = route.params
+        const {editedTokenURLs, updateTokenId} = route.params
         editedTokenURLArray = editedTokenURLs
+        searchTokenId = updateTokenId
     }
-
-    console.log("Search screen edited token url array")
-    console.log(editedTokenURLArray)
 
     const storeSearchTerm =()=>{
         const parsedSearchTerm = {searchTerm}.searchTerm.replace(/ /g,'+').toLowerCase();
@@ -24,7 +23,8 @@ const SearchScreen =({navigation, route})=>{
         
         navigation.navigate("Results",{
             searchURL: searchURL,
-            editedTokenURLs: editedTokenURLArray})
+            editedTokenURLs: editedTokenURLArray,
+            updateTokenId: searchTokenId})
     }
 
     const renderItems =({item})=>{
@@ -48,6 +48,11 @@ const SearchScreen =({navigation, route})=>{
             onPress={storeSearchTerm}>
                 <Text style={styles.searchText}>Search</Text>
             </TouchableOpacity>
+            <FlatList
+                data={editedTokenURLArray}
+                renderItem={renderItems}
+                keyExtractor={(items)=>{return items.id}}
+            />
         </View>
     )};
 
@@ -74,13 +79,5 @@ const styles = StyleSheet.create({
         padding: 5
     }
 });
-
-/*
-<FlatList
-                data={editedTokenURLArray}
-                renderItem={renderItems}
-                keyExtractor={(items)=>{return items.id}}
-            />
-*/
 
 export default SearchScreen;
