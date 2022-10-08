@@ -3,16 +3,26 @@ Generate the search criteria for desired tokens
 */
 
 import {React, useState} from "react";
-import {Text, StyleSheet, View, TouchableOpacity, TextInput} from 'react-native';
+import {Text, StyleSheet, View, TouchableOpacity, TextInput, FlatList} from 'react-native';
+import EditedToken from "../components/EditedToken";
 
 const SearchScreen =({navigation})=>{
     const [searchTerm, setSearchTerm] = useState(null);
+    const [tokenURLs, setTokenURLs] = useState([]);
 
-    const storeSearchTerm=()=>{
+    const storeSearchTerm =()=>{
         const parsedSearchTerm = {searchTerm}.searchTerm.replace(/ /g,'+').toLowerCase();
         const searchURL = 'https://www.cardkingdom.com/catalog/search?search=header&filter%5Bname%5D='+parsedSearchTerm;
         navigation.navigate("Results",{searchURL: searchURL})
     }
+
+    const renderItems =({item})=>{
+        return(
+            <EditedToken
+                imageURL={item.src}
+            />
+        );
+    };
 
     return(
         <View>
@@ -27,6 +37,11 @@ const SearchScreen =({navigation})=>{
             onPress={storeSearchTerm}>
                 <Text style={styles.searchText}>Search</Text>
             </TouchableOpacity>
+            <FlatList
+                data={tokenURLs}
+                renderItem={renderItems}
+                keyExtractor={(items)=>{return items.id}}
+            />
         </View>
     )};
 
