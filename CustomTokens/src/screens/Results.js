@@ -7,16 +7,9 @@ var HTMLParser = require('fast-html-parser')
 
 const Results =({navigation, route})=>{
     const [tokenURLs, setTokenURLs] = useState(null);
-    const [editedTokenURL, setEditedTokenURLs] = useState([]);
-    const [timeToNavigate, setTimeToNavigate] = useState(0)
-    const [tokenId, setTokenId] = useState(0)
-
-    const {searchURL, editedTokenURLs, updateTokenId} = route.params
-
+    
+    const {searchURL} = route.params
     useEffect(()=>{
-        setEditedTokenURLs(editedTokenURLs)
-        setTokenId(updateTokenId)
-
         const loadTokens=async()=>{
             const response = await fetch(searchURL);
             const htmlString = await response.text();
@@ -24,15 +17,13 @@ const Results =({navigation, route})=>{
             try{
                 let imageURLs = []
                 var root = HTMLParser.parse(htmlString)
-                
-                for(let i=0; i<root.querySelectorAll('img').length; i++){
-                    if(root.querySelectorAll('img')[i].classNames.includes("cardSrc")){
-                        let rawAttrs = root.querySelectorAll('img')[i].rawAttrs
-                        let startIndex = rawAttrs.indexOf("https")
-                        let stopIndex = rawAttrs.indexOf("jpg")+3
-                        let imgObj = {id: i, src: rawAttrs.substring(startIndex, stopIndex)}
-                        imageURLs.push(imgObj)
-                    }
+
+                for(let i=0; i<root.querySelectorAll('mtg').length; i++){
+                    let rawAttrs = root.querySelectorAll('mtg')[i].rawAttrs
+                    let startIndex = rawAttrs.indexOf("https")
+                    let stopIndex = rawAttrs.indexOf("jpg")+3
+                    let imgObj = {id: i, src: rawAttrs.substring(startIndex, stopIndex)}
+                    imageURLs.push(imgObj)
                 }
                 
                 setTokenURLs(imageURLs)
@@ -44,18 +35,15 @@ const Results =({navigation, route})=>{
         loadTokens()
     }, []);
 
+    const editToken=({item})=>{
+        console.log(item.src)
+    }
+
     const renderItems=({item})=>{
         return(
             <TouchableOpacity 
             onPress={()=>{
-                setEditedTokenURLs(arr => [...arr, {id: tokenId, src: item.src}])
-                setTokenId(tokenId + 1)
-                setTimeToNavigate(timeToNavigate + 1)
-                if(timeToNavigate>0){
-                    navigation.navigate('Search', {
-                        editedTokenURLs: editedTokenURL,
-                        updateTokenId: tokenId})
-                }
+                navigation.navigate('EditToken', {imageURL: item.src})
             }}
             style={styles.buttonStyle}>
                 <Image key={item.id}

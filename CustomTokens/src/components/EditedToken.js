@@ -9,7 +9,7 @@ import {Text, Image, View, StyleSheet} from 'react-native';
 
 const EditedToken =({imageURL})=>{
     return(
-        <View>
+        <View style={styles.tokenView}>
             <Image
                 style={styles.buttonImageStyle}
                 source={{uri: imageURL}}/>
@@ -18,6 +18,9 @@ const EditedToken =({imageURL})=>{
 };
 
 const styles = StyleSheet.create({
+    tokenView:{
+        marginBottom: 5
+    },
     buttonImageStyle:{
         width: 350,
         height: 350,

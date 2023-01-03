@@ -1,4 +1,4 @@
-/*
+1/*
 Edit a token's power, toughness, and abilities
 */
 

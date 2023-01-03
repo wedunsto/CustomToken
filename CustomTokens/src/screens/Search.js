@@ -49,6 +49,7 @@ const SearchScreen =({navigation, route})=>{
                 <Text style={styles.searchText}>Search</Text>
             </TouchableOpacity>
             <FlatList
+                style={styles.listTokens}
                 data={editedTokenURLArray}
                 renderItem={renderItems}
                 keyExtractor={(items)=>{return items.id}}
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
     },
     searchButton:{
         alignSelf: "center",
-        marginTop: 150
+        marginTop: 10
     },
     searchText:{
         fontSize: 25,
@@ -77,6 +78,9 @@ const styles = StyleSheet.create({
         borderWidth: 4,
         borderRadius: 10,
         padding: 5
+    },
+    listTokens:{
+        marginTop: 10
     }
 });
 
