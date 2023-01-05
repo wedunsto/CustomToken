@@ -35,10 +35,6 @@ const Results =({navigation, route})=>{
         loadTokens()
     }, []);
 
-    const editToken=({item})=>{
-        console.log(item.src)
-    }
-
     const renderItems=({item})=>{
         return(
             <TouchableOpacity 

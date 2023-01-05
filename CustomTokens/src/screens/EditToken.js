@@ -6,14 +6,15 @@ import {React, useState} from 'react';
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 
 const EditToken=({navigation, route})=>{
-    const [tokenURLs, setTokenURLs] = useState([1])
-    const [tokenID, setTokenID] = useState(0)
+    const [tokenURLs, setTokenURLs] = useState([0])
     const {imageURL} = route.params
-    console.log(imageURL)
 
     const populateArray =()=>{
-        //setDigits(arr => [...arr, {id: digit, value: digit}]);
         setTokenURLs(arr => [...arr, {value: imageURL}])
+        if(tokenURLs.length > 1){
+            console.log(tokenURLs)
+            navigation.navigate('Search')
+        }
     }
 
     return(
@@ -21,10 +22,6 @@ const EditToken=({navigation, route})=>{
             <TouchableOpacity
             style={styles.searchButton}
             onPress={populateArray}>
-                <Text style={styles.searchText}>Pre-Submit</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-            style={styles.searchButton}>
                 <Text style={styles.searchText}>Submit</Text>
             </TouchableOpacity>
         </View>
